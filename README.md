@@ -1,12 +1,12 @@
 # Notification Service
 
-The Notification Service is a Spring Boot application that provides an API for sending notifications. It uses a rate limiting mechanism to limit the number of notifications that a user can send within a certain time window.
+The Notification Service is a Spring Boot application using Hexagonal Architecture that provides an API for sending notifications. It uses a rate limiting mechanism to limit the number of notifications that a user can send within a certain time window.
 
 ## Rate Limiting Strategy
 
 The rate limiting is implemented using Redis and its Sorted Set (ZSET) data structure. Each notification sent by a user is stored in a ZSET with a timestamp as its score. This allows for efficient querying of recent notifications within a given time window.
 
-When a notification is sent, the application checks the number of notifications sent by the user within the time window. If the number of notifications exceeds a certain limit, the application will not send the notification and will return a "quota exceeded (Status 422)" error.
+When a notification is sent, the application checks the number of notifications sent by the user within the time window. If the number of notifications exceeds a certain limit, the application will not send the notification and will return a "quota exceeded (Status 429)" error.
 
 The key for each ZSET in Redis is generated using the notification type and user ID. This allows the application to apply rate limiting separately for each notification type and user.
 
